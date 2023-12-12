@@ -154,8 +154,8 @@ function EntryComparison({ left, right }) {
         {sortedKeys.map((key) => {
           const left = leftIndexed[key];
           const right = rightIndexed[key];
-          const leftType = typeof left;
-          const rightType = typeof right;
+          const leftType = findType(left);
+          const rightType = findType(right);
           const Renderer =
             leftType === rightType
               ? renderEntry[leftType]
@@ -170,6 +170,13 @@ function EntryComparison({ left, right }) {
       </tbody>
     </table>
   );
+}
+
+function findType(left) {
+    if (left === null) {
+        return 'null';
+    }
+    return typeof left;
 }
 
 function CompareString({ left, right }) {

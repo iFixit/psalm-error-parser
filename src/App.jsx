@@ -157,11 +157,7 @@ function ArrayLiteralComparison({ left, right }) {
           const left = leftIndexed[key];
           const right = rightIndexed[key];
           return (
-            <RenderDescriptionCells
-              key={key}
-              left={left}
-              right={right}
-            />
+            <RenderDescriptionCells keyName={key} left={left} right={right} />
           );
         })}
       </tbody>
@@ -169,20 +165,17 @@ function ArrayLiteralComparison({ left, right }) {
   );
 }
 
-function RenderDescriptionCells({key, left ,right}) {
+function RenderDescriptionCells({ keyName, left, right }) {
     const leftType = findType(left);
     const rightType = findType(right);
     const Renderer =
-      leftType === rightType
-        ? renderEntry[leftType]
-        : renderEntry.default;
+    leftType === rightType ? renderEntry[leftType] : renderEntry.default;
     return (
       <tr>
-        <td>{key}</td>
+      <td>{keyName}</td>
         <Renderer left={left} right={right} />
       </tr>
     );
-
 }
 
 function findType(left) {

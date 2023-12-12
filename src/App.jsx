@@ -4,13 +4,6 @@ import * as React from "react";
 
 export function App() {
   const [str, setStr] = React.useState("");
-  const parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar));
-  parser.feed(str);
-  const parsed = parser.results;
-  console.log(parsed);
-  const first = parsed.find((p) => p.length === 2);
-  console.log("first", first);
-  const expected = first?.length === 2;
   return (
     <>
       <style>
@@ -37,20 +30,40 @@ export function App() {
           content={str}
           onChange={(e) => setStr(e.target.value)}
         />
-        {expected && <ObjectComparer left={first[0]} right={first[1]} />}
-        {!expected && first && (
-          <div>
-            Trouble parsing. Got<pre>{JSON.stringify(first)}</pre>
-          </div>
-        )}
-        {!expected && !first && str && (
-          <div>
-            Trouble parsing. Got<pre>{JSON.stringify(parsed)}</pre>
-          </div>
-        )}
+        <RenderComparison str={str} />
       </div>
     </>
   );
+}
+
+export function RenderComparison({str}) {
+    const parsed = parse(str);
+    const first = parsed.find((p) => p.length === 2);
+    console.log("first", first);
+    const expected = first?.length === 2;
+    return (
+      <>
+          {expected && <ObjectComparer left={first[0]} right={first[1]} />}
+          {!expected && first && (
+            <div>
+              Trouble parsing. Got<pre>{JSON.stringify(first)}</pre>
+            </div>
+          )}
+          {!expected && !first && str && (
+            <div>
+              Trouble parsing. Got<pre>{JSON.stringify(parsed)}</pre>
+            </div>
+          )}
+      </>
+    );
+  }
+
+function parse(str) {
+    const parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar));
+    parser.feed(str);
+    const parsed = parser.results;
+    console.log(parsed);
+    return parsed;
 }
 
 function ObjectComparer({ left, right }) {

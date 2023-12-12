@@ -25,5 +25,10 @@
     "prettier": "^3.1.1",
     "process": "^0.11.10",
     "svgo": "^3.0.2"
+  },
+  "targets": {
+    "default": {
+      "publicUrl": "/psalm-error-parser/"
+    }
   }
 }

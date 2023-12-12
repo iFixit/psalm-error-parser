@@ -124,7 +124,13 @@ const renderTable = {
 };
 
 const renderEntry = {
-  object: ObjectComparer,
+  object: ({ left, right }) => {
+    return (
+      <td colspan="2">
+        <ObjectComparer left={left} right={right} />
+      </td>
+    );
+  },
   string: CompareString,
   default: ({ left, right }) => {
     const leftString = JSON.stringify(left, null, 2);

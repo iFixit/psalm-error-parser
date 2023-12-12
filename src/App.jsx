@@ -154,17 +154,12 @@ function EntryComparison({ left, right }) {
         {sortedKeys.map((key) => {
           const left = leftIndexed[key];
           const right = rightIndexed[key];
-          const color = left === right ? "black" : "red";
-          if (typeof left !== typeof right) {
-            return (
-              <tr>
-                <td>{key}</td>
-                <renderEntry.default left={left} right={right} />
-              </tr>
-            );
-          }
-          const type = typeof left;
-          const Renderer = renderEntry[type] || renderEntry.default;
+          const leftType = typeof left;
+          const rightType = typeof right;
+          const Renderer =
+            leftType === rightType
+              ? renderEntry[leftType]
+              : renderEntry.default;
           return (
             <tr>
               <td>{key}</td>

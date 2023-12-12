@@ -36,37 +36,71 @@ export function App() {
   );
 }
 
-export function RenderComparison({str}) {
-    const parsed = parse(str);
-    const first = parsed.find((p) => p.length === 2);
-    console.log("first", first);
-    const expected = first?.length === 2;
+export function RenderComparison({ str }) {
+  const parsed = parse(str);
+  if (parsed.message !== undefined) {
+    return <ParseErrorMessage message={parsed.message} />;
+  }
+  const first = parsed.find((p) => p.length === 2);
+  console.log("first", first);
+  const expected = first?.length === 2;
 
-    if (expected) {
-        return <ObjectComparer left={first[0]} right={first[1]} />;
-    }
+  if (expected) {
+    return <ObjectComparer left={first[0]} right={first[1]} />;
+  }
 
-    if (first) {
-        return (
-            <div>
-                Trouble parsing. Got<pre>{JSON.stringify(first)}</pre>
-            </div>
-        );
-    }
+  if (first) {
+    return <ErrorMessage message={JSON.stringify(first)} />;
+  }
 
-        return (
-            <div>
-                Trouble parsing. Got<pre>{JSON.stringify(parsed)}</pre>
-            </div>
-        );
+  return <ErrorMessage message={JSON.stringify(parsed)} />;
+}
+
+function ParseErrorMessage({ message }) {
+  const chunks = message.split("\n\n");
+  const errorMessage = chunks[0];
+  const input = chunks[1];
+  const [inputText, marker] = input.split("\n");
+  const markerOffset = marker.indexOf("^");
+  const inputBeforeOffset = inputText.slice(0, markerOffset);
+  const inputAfterOffset = inputText.slice(markerOffset + 1);
+  const inputAtOffset = inputText[markerOffset];
+  const description = chunks.slice(2).join("\n\n");
+  return (
+    <>
+      <pre>{errorMessage}</pre>
+      <pre style={{ overflow: "scroll", width: "75%" }}>
+        <pre>
+          {inputBeforeOffset}
+          <span style={{ color: "red" }}>{inputAtOffset}</span>
+          {inputAfterOffset}
+        </pre>
+        <pre style={{ color: "red" }}>{marker}</pre>
+      </pre>
+      <pre style={{ width: "75%", whiteSpace: "pre-wrap" }}>{description}</pre>
+    </>
+  );
+}
+
+function ErrorMessage({ message }) {
+  return (
+    <>
+      Trouble parsing.
+      <pre style={{ width: "75%", whiteSpace: "pre-wrap" }}>{message}</pre>
+    </>
+  );
 }
 
 function parse(str) {
+  try {
     const parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar));
     parser.feed(str);
     const parsed = parser.results;
     console.log(parsed);
     return parsed;
+  } catch (error) {
+    return error;
+  }
 }
 
 function ObjectComparer({ left, right }) {
@@ -96,7 +130,7 @@ const renderEntry = {
     const leftString = JSON.stringify(left, null, 2);
     const rightString = JSON.stringify(right, null, 2);
     return <CompareString left={leftString} right={rightString} />;
-  }
+  },
 };
 
 function EntryComparison({ left, right }) {
@@ -122,17 +156,19 @@ function EntryComparison({ left, right }) {
           const right = rightIndexed[key];
           const color = left === right ? "black" : "red";
           if (typeof left !== typeof right) {
-            return (<tr>
+            return (
+              <tr>
                 <td>{key}</td>
                 <renderEntry.default left={left} right={right} />
-            </tr>)
+              </tr>
+            );
           }
           const type = typeof left;
           const Renderer = renderEntry[type] || renderEntry.default;
           return (
             <tr>
               <td>{key}</td>
-                <Renderer left={left} right={right} />
+              <Renderer left={left} right={right} />
             </tr>
           );
         })}

@@ -114,7 +114,7 @@ function ObjectComparer({ left, right }) {
   const type = left.type;
   console.log("type", type);
   const Renderer = renderTable[type] || renderTable.default;
-  return <Renderer left={left.entries} right={right.entries} />;
+  return <Renderer left={left} right={right} />;
 }
 
 const renderTable = {
@@ -134,8 +134,10 @@ const renderEntry = {
 };
 
 function ArrayLiteralComparison({ left, right }) {
-  const leftIndexed = indexEntries(left);
-  const rightIndexed = indexEntries(right);
+  const leftEntries = left.entries;
+  const rightEntries = right.entries;
+  const leftIndexed = indexEntries(leftEntries);
+  const rightIndexed = indexEntries(rightEntries);
   const keys = new Set([
     ...Object.keys(leftIndexed),
     ...Object.keys(rightIndexed),

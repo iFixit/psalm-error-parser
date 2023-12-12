@@ -30,7 +30,7 @@ export function App() {
           content={str}
           onChange={(e) => setStr(e.target.value)}
         />
-        <RenderComparison str={str} />
+        {str && <RenderComparison str={str} />}
       </div>
     </>
   );
@@ -41,22 +41,25 @@ export function RenderComparison({str}) {
     const first = parsed.find((p) => p.length === 2);
     console.log("first", first);
     const expected = first?.length === 2;
-    return (
-      <>
-          {expected && <ObjectComparer left={first[0]} right={first[1]} />}
-          {!expected && first && (
+
+    if (expected) {
+        return <ObjectComparer left={first[0]} right={first[1]} />;
+    }
+
+    if (first) {
+        return (
             <div>
-              Trouble parsing. Got<pre>{JSON.stringify(first)}</pre>
+                Trouble parsing. Got<pre>{JSON.stringify(first)}</pre>
             </div>
-          )}
-          {!expected && !first && str && (
+        );
+    }
+
+        return (
             <div>
-              Trouble parsing. Got<pre>{JSON.stringify(parsed)}</pre>
+                Trouble parsing. Got<pre>{JSON.stringify(parsed)}</pre>
             </div>
-          )}
-      </>
-    );
-  }
+        );
+}
 
 function parse(str) {
     const parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar));

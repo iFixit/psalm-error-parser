@@ -118,8 +118,8 @@ function ObjectComparer({ left, right }) {
 }
 
 const renderTable = {
-  array_literal: EntryComparison,
-  list_literal: EntryComparison,
+  array_literal: ArrayLiteralComparison,
+  list_literal: ArrayLiteralComparison,
   default: () => <div>Not supported</div>,
 };
 
@@ -133,7 +133,7 @@ const renderEntry = {
   },
 };
 
-function EntryComparison({ left, right }) {
+function ArrayLiteralComparison({ left, right }) {
   const leftIndexed = indexEntries(left);
   const rightIndexed = indexEntries(right);
   const keys = new Set([

@@ -120,8 +120,39 @@ function ObjectComparer({ left, right }) {
 const renderTable = {
   array_literal: ArrayLiteralComparison,
   list_literal: ArrayLiteralComparison,
+  array: ArrayComparison,
+  list: ArrayComparison,
   default: () => <div>Not supported</div>,
 };
+
+function ArrayComparison({ left, right }) {
+  console.log(JSON.stringify(left, null, 2));
+  console.log(JSON.stringify(right, null, 2));
+
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Left</th>
+          <th>Right</th>
+        </tr>
+      </thead>
+      <tbody>
+        <RenderDescriptionCells
+          keyName="Key Type"
+          left={left.keyType}
+          right={right.keyType}
+        />
+        <RenderDescriptionCells
+          keyName="Value Type"
+          left={left.valueType}
+          right={right.valueType}
+        />
+      </tbody>
+    </table>
+  );
+}
 
 const renderEntry = {
   object: ({ left, right }) => {

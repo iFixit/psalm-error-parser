@@ -203,16 +203,16 @@ function ArrayLiteralComparison({ left, right }) {
 }
 
 function RenderDescriptionCells({ keyName, left, right }) {
-    const leftType = findType(left);
-    const rightType = findType(right);
-    const Renderer =
+  const leftType = findType(left);
+  const rightType = findType(right);
+  const Renderer =
     leftType === rightType ? renderEntry[leftType] : renderEntry.default;
-    return (
-      <tr>
+  return (
+    <tr>
       <td>{keyName}</td>
-        <Renderer left={left} right={right} />
-      </tr>
-    );
+      <Renderer left={left} right={right} />
+    </tr>
+  );
 }
 
 function findType(left) {

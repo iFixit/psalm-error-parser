@@ -156,17 +156,12 @@ function ArrayLiteralComparison({ left, right }) {
         {sortedKeys.map((key) => {
           const left = leftIndexed[key];
           const right = rightIndexed[key];
-          const leftType = findType(left);
-          const rightType = findType(right);
-          const Renderer =
-            leftType === rightType
-              ? renderEntry[leftType]
-              : renderEntry.default;
           return (
-            <tr>
-              <td>{key}</td>
-              <Renderer left={left} right={right} />
-            </tr>
+            <RenderDescriptionCells
+              key={key}
+              left={left}
+              right={right}
+            />
           );
         })}
       </tbody>
@@ -174,11 +169,27 @@ function ArrayLiteralComparison({ left, right }) {
   );
 }
 
+function RenderDescriptionCells({key, left ,right}) {
+    const leftType = findType(left);
+    const rightType = findType(right);
+    const Renderer =
+      leftType === rightType
+        ? renderEntry[leftType]
+        : renderEntry.default;
+    return (
+      <tr>
+        <td>{key}</td>
+        <Renderer left={left} right={right} />
+      </tr>
+    );
+
+}
+
 function findType(left) {
-    if (left === null) {
-        return 'null';
-    }
-    return typeof left;
+  if (left === null) {
+    return "null";
+  }
+  return typeof left;
 }
 
 function CompareString({ left, right }) {

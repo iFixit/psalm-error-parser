@@ -1,32 +1,4 @@
-I'array{}''array<ueSp,z2J>'3
-4$'array{y:  9,  0mU: %_2"U,A: U,e:  q=,4:   .,rm: "tO}'&
-9'array{}'1g@@'list<ag,eZy>'
-'list{}'y;
-'list<W,3>'h'list{A:  Dg{i,2W: #)3}'mq
-Z'list{b: d,ZSr: @, j:    {Ln,PUeh:    qf;K, qo: &}'
-'array{}'
-C('list<jZ,1WC>'&
-t0:'list{}'T
-'list{}' ]m'array<1, x>'5'array{K:  b}' B
-'array<N,RV>']
-'array<M,w>'r\2o]
-'array{Y:  a,  6OzI: /}'h
-^!'array<tF,N4>'|K4>'list<ExIcpB,                MX>')j'array{}'zd'list<B,1>'3.
-3Ws'array{Yx: 2HY!,1JRR: 2}'
-'list<N, DmR>'6Wf'list{}'M^nE$_/Wp'array<98,mmj>'/W
-6|'list<4g,M>'Dc=~]
-'array{}''array{}'AS
-@9'array{yTQp:   q~}'q'list<PRh,   iA0a1>'<G{)'list{}'cem'list{}''list<n,   e>'H1
-z'list<W,R>'<'array<9,u>''list{jV:     eH}'mD
-'array<rl,      I>'C'list<s,     w>''list<oe1Xy,0C5>'
-'list{}': 
-'list{DY: 6}'
-'array{}'2]C8'list{0Dn: F$, f: z;,    5: S}'o'array{z:  Z,0:  -,k:   amj,wFsojIqqadd:  =,8: 85,U: >}'Da)'list<D,rb>'?
-#'array{}'
-z'array{}'RCq'array{P:       1, r0: FK`<K, sko: S}'
-)?'list<f,       I>''list{j: .;}'}-+'list<jlTK,AH3L>'CR'array<c,     u>']
-^b'array<d2i,       P>'$_'array<9s6,sbtOS>'^41^L'list{}'m~E'array{S: C,  H: l8}'%
-<'array{c: :}'OOr'array<0,    tU>'Sm"
-'array{}'z'array{g: O, iW: <AT}'
 "ERROR: InvalidReturnStatement - 7:12 - The inferred type 'array{left: 'hello', right: int}' does not match the declared return type 'array{lefft: int, right: string}' for takesAnInt due to additional array shape fields (left)";
-Argument 1 of iFixit\Shopify\ShopifyOrderService::isCancellableAppRefund expects array{note: string}, but array{note: string, refund_line_items: array<array-key, array{line_item: array{id: int}, quantity: int}>} with additional array shape fields (refund_line_items) was provided.
+Argument 1 of iFixit\Shopify\ShopifyOrderService::isCancellableAppRefund expects 'array{note: string}', but 'array{note: string, refund_line_items: array<array-key, array{line_item: array{id: int}, quantity: int}>}' with additional array shape fields (refund_line_items) was provided.
+Error: Tests/Objects/Extensions/TroubleshootingExtension.php:20:55: InvalidArgument: Argument 1 of WikiExtension::createCategory expects array{authorid?: int, category?: string, delete?: bool, langid?: string, namespace?: string, orphan?: bool, public?: bool, syncAlgolia?: bool, tags?: list<string>, text?: string, title?: string, title_prefix?: string}, but array{category?: string, namespace?: string, title?: string, ...<array-key, mixed>} provided (see https://psalm.dev/004)
+array{category: string, namespace: string, title: string}

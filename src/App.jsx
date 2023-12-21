@@ -173,12 +173,11 @@ const renderEntry = {
 function ArrayLiteralComparison({ left, right }) {
   const leftEntries = left.entries;
   const rightEntries = right.entries;
-  const keyTypes = Object.fromEntries(leftEntries.map((e) => [e.key, typeof e.key]));
   const leftIndexed = indexEntries(leftEntries);
   const rightIndexed = indexEntries(rightEntries);
   const keys = new Set([
-    ...Object.keys(leftIndexed),
-    ...Object.keys(rightIndexed),
+    ...leftIndexed.keys(),
+    ...rightIndexed.keys(),
   ]);
   const sortedKeys = [...keys].sort();
   return (
@@ -192,10 +191,11 @@ function ArrayLiteralComparison({ left, right }) {
       </thead>
       <tbody>
         {sortedKeys.map((key) => {
-          const left = leftIndexed[key];
-          const right = rightIndexed[key];
+          const left = leftIndexed.get(key);
+          const right = rightIndexed.get(key);
+          console.log(typeof key)
           return (
-            <RenderDescriptionCells keyName={key} keyType={keyTypes[key]} left={left} right={right} />
+            <RenderDescriptionCells keyName={key} keyType={typeof key} left={left} right={right} />
           );
         })}
       </tbody>
@@ -207,7 +207,8 @@ function RenderDescriptionCells({ keyName, keyType, left, right }) {
   const leftType = findType(left);
   const rightType = findType(right);
   const Renderer =
-    leftType === rightType ? renderEntry[leftType] : renderEntry.default;
+    leftType === rightType ? (renderEntry[leftType] || renderEntry.default) : renderEntry.default;
+    console.log(keyType)
   const KeyRenderer = keyType === "number" ? IntKeyCell : KeyCell
   return (
     <tr>
@@ -243,10 +244,5 @@ function CompareString({ left, right }) {
 }
 
 function indexEntries(entries) {
-  console.error(entries);
-  const indexed = {};
-  for (const entry of entries) {
-    indexed[entry.key] = entry.value;
-  }
-  return indexed;
+  return new Map(entries.map(entry => [entry.key, entry.value]));
 }

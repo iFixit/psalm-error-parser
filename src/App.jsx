@@ -173,6 +173,7 @@ const renderEntry = {
 function ArrayLiteralComparison({ left, right }) {
   const leftEntries = left.entries;
   const rightEntries = right.entries;
+  const keyTypes = Object.fromEntries(leftEntries.map((e) => [e.key, typeof e.key]));
   const leftIndexed = indexEntries(leftEntries);
   const rightIndexed = indexEntries(rightEntries);
   const keys = new Set([
@@ -194,7 +195,7 @@ function ArrayLiteralComparison({ left, right }) {
           const left = leftIndexed[key];
           const right = rightIndexed[key];
           return (
-            <RenderDescriptionCells keyName={key} left={left} right={right} />
+            <RenderDescriptionCells keyName={key} keyType={keyTypes[key]} left={left} right={right} />
           );
         })}
       </tbody>
@@ -202,17 +203,26 @@ function ArrayLiteralComparison({ left, right }) {
   );
 }
 
-function RenderDescriptionCells({ keyName, left, right }) {
+function RenderDescriptionCells({ keyName, keyType, left, right }) {
   const leftType = findType(left);
   const rightType = findType(right);
   const Renderer =
     leftType === rightType ? renderEntry[leftType] : renderEntry.default;
+  const KeyRenderer = keyType === "number" ? IntKeyCell : KeyCell
   return (
     <tr>
-      <td>{keyName}</td>
+      <KeyRenderer>{keyName}</KeyRenderer>
       <Renderer left={left} right={right} />
     </tr>
   );
+}
+
+function KeyCell({children}) {
+  return <td>{children}</td>
+}
+
+function IntKeyCell({children}) {
+  return <td style={{color: "blue"}}>{children}</td>
 }
 
 function findType(left) {

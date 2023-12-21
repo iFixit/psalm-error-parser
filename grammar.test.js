@@ -1,12 +1,13 @@
 const fs = require('fs');
 const nearley = require('nearley');
-const grammar = require('./src/grammar');
+const compiledGrammar = require('./src/grammar');
 
 const examples = fs.readFileSync('examples.txt', 'utf8').split('\n');
 
 test.each(examples)('Parsing "%s"', (example) => {
-    const parser = new nearley.Parser(nearley.Grammar.fromCompiled(grammar));
+    const grammar = nearley.Grammar.fromCompiled(compiledGrammar)
+    const parser = new nearley.Parser(grammar);
     parser.feed(example);
-    expect(parser.results.length).toBeGreaterThan(0);
+    expect(parser.results.length).toBe(1);
 });
 

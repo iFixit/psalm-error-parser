@@ -50,10 +50,10 @@ export function RenderComparison({ str }) {
   }
 
   if (first) {
-    return <ErrorMessage message={JSON.stringify(first)} />;
+    return <ErrorMessage message={JSON.stringify(first, null, 2)} />;
   }
 
-  return <ErrorMessage message={JSON.stringify(parsed)} />;
+  return <ErrorMessage message={JSON.stringify(parsed, null, 2)} />;
 }
 
 function ParseErrorMessage({ message }) {

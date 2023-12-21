@@ -2,7 +2,7 @@ main -> main_body:* {% x => EXTRACT(x).filter(x => x) %}
 main_body -> (array_literal | array_record | list_literal | list_record | text) {% ALT_EXTRACT %}
 array_literal -> "array{" _ "}" {% x => array_literal() %}
               | "array{" _ keyval_body _ "}"  {% x => array_literal(x[2]) %}
-              | "array{" _ keyval_body _ "," _ "...<" type "," __ type ">" _ "}" {% x => array_literal(x[2], x[7]) %}
+              | "array{" _ keyval_body _ "," _ "...<" type "," __ type ">" _ "}" {% x => array_literal(x[2], record_type("array", x[7], x[10])) %}
 list_literal -> "list{" _ "}" {% x => list_literal() %}
              | "list{" _ list_body _ "}" {% x => list_literal(x[2]) %}
 			 | "list{" _ list_body _ "," _ "...<" type ">" _ "}" {% x => list_literal(x[2], x[7]) %}
